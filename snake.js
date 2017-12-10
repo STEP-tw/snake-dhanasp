@@ -1,3 +1,11 @@
+const _directions=["north","east","south","west","north"];
+
+const Position=function(x,y,direction) {
+  this.x=x;
+  this.y=y;
+  this.direction=direction;
+}
+
 const actions={};
 
 actions.east=(x,y)=>[x+1,y];
@@ -5,27 +13,46 @@ actions.west=(x,y)=>[x-1,y];
 actions.north=(x,y)=>[x,y-1];
 actions.south=(x,y)=>[x,y+1];
 
-const getNextCoordinate=function(coord,direction) {
-  let x=coord[0];
-  let y=coord[1];
-  return actions[direction](x,y);
+Position.prototype.next=function() {
+  let nextCoord=actions[this.direction](this.x,this.y);
+  return new Position(nextCoord[0],nextCoord[1],this.direction);
 }
-const Snake=function(initPos,length,direction) {
-  this.positions=[[12,10],[11,10],[10,10]].reverse();
-  this.direction="east";
+
+Position.prototype.turnLeft=function() {
+  let currentIndex=_directions.lastIndexOf(this.direction);
+  let newDirection=_directions[currentIndex-1];
+  return new Position(this.x,this.y,newDirection);
+}
+
+Position.prototype.turnRight=function() {
+  let currentIndex=_directions.indexOf(this.direction);
+  let newDirection=_directions[currentIndex+1];
+  return new Position(this.x,this.y,newDirection);
+}
+
+Position.prototype.getCoord=function() {
+  return [this.x,this.y];
+}
+
+const Snake=function(head,body) {
+  this.head=head;
+  this.body=body;
 }
 
 Snake.prototype={
-  getPositions:function() {
-    return this.positions;
+  getBody:function() {
+    return this.body;
   },
   getHead:function() {
-    return this.positions.slice(-1)[0];
+    return this.head;
   },
   move:function() {
     let newHead=getNextCoordinate(this.getHead(),this.direction);
     this.positions.push(newHead);
     return this.positions.shift();
+  },
+  grow:function() {
+    this.positions.unshift(["hidden","tail"]);
   },
   turnLeft:function() {
     let directions=["north","east","south","west","north"];
@@ -48,8 +75,8 @@ Snake.prototype={
 //
 
 let snake=undefined;
-let numberOfRows=48;
-let numberOfCols=80;
+let numberOfRows=60;
+let numberOfCols=120;
 
 const drawGrids=function() {
   let grid=document.getElementById("grid");
@@ -64,12 +91,29 @@ const drawGrids=function() {
   }
 }
 
+const paintCell=function(pos,color) {
+  let cell=document.getElementById(pos.getCoord().join("_"));
+  if(cell)
+    cell.className=color;
+}
+
+const paintBody=function(pos) {
+  paintCell(pos,"snake");
+}
+
+const paintHead=function(pos) {
+  paintCell(pos,"snake_head");
+}
+
+const unpaintSnake=function(pos) {
+  paintCell(pos,"");
+}
+
 const drawSnake=function(snake) {
-  snake.getPositions().forEach(function(pos){
-    let id=pos.join("_");
-    let cell=document.getElementById(id);
-    cell.className="snake";
+  snake.getBody().forEach(function(pos){
+    paintBody(pos);
   });
+  paintHead(snake.getHead());
 }
 
 const isOutOfBounds=function(coord) {
@@ -85,18 +129,6 @@ const detectCollisions=function(snake) {
   }
 }
 
-const paintCell=function(coord,color) {
-  let cell=document.getElementById(coord.join("_"));
-  cell.className=color;
-}
-
-const paintSnake=function(coord) {
-  paintCell(coord,"snake");
-}
-
-const unpaintSnake=function(coord) {
-  paintCell(coord,"");
-}
 
 const animateSnake=function() {
   let oldTail=snake.move();
@@ -106,10 +138,17 @@ const animateSnake=function() {
 }
 
 const changeSnakeDirection=function(event) {
-  if(event.code=="KeyA") {
-    snake.turnLeft();
-  } else if(event.code=="KeyD") {
-    snake.turnRight();
+  switch (event.code) {
+    case "KeyA":
+      snake.turnLeft();
+      break;
+    case "KeyD":
+      snake.turnRight();
+      break;
+    case "KeyC":
+      snake.grow();
+      break;
+    default:
   }
 }
 
@@ -119,12 +158,22 @@ const addKeyListener=function() {
   grid.focus();
 }
 
+const createSnake=function() {
+  let tail=new Position(12,10,"east");
+  let body=[];
+  body.push(tail);
+  body.push(tail.next());
+  let head=tail.next().next();
+
+  snake=new Snake(head,body);
+}
+
 const startGame=function() {
-  snake=new Snake();
+  createSnake();
   drawGrids();
   drawSnake(snake);
-  addKeyListener();
-  setInterval(animateSnake,140);
+  // addKeyListener();
+  // setInterval(animateSnake,140);
 }
 
 window.onload=startGame;
