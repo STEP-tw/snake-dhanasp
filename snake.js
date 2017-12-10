@@ -47,22 +47,19 @@ Snake.prototype={
     return this.head;
   },
   move:function() {
-    let newHead=getNextCoordinate(this.getHead(),this.direction);
-    this.positions.push(newHead);
-    return this.positions.shift();
+    let newHead=this.head.next();
+    this.body.push(this.head);
+    this.head=newHead;
+    return this.body.shift();
   },
   grow:function() {
     this.positions.unshift(["hidden","tail"]);
   },
   turnLeft:function() {
-    let directions=["north","east","south","west","north"];
-    let currentIndex=directions.lastIndexOf(this.direction);
-    this.direction=directions[currentIndex-1];
+    this.head=this.head.turnLeft();
   },
   turnRight:function() {
-    let directions=["north","east","south","west","north"];
-    let currentIndex=directions.indexOf(this.direction);
-    this.direction=directions[currentIndex+1];
+    this.head=this.head.turnRight();
   },
   containsPosition:function(head) {
     return this.positions.slice(0,-1).some(function(position){
@@ -129,12 +126,13 @@ const detectCollisions=function(snake) {
   }
 }
 
-
 const animateSnake=function() {
+  let oldHead=snake.getHead();
   let oldTail=snake.move();
   unpaintSnake(oldTail);
   let head=snake.getHead();
-  paintSnake(head);
+  paintHead(head);
+  paintBody(oldHead);
 }
 
 const changeSnakeDirection=function(event) {
@@ -172,8 +170,8 @@ const startGame=function() {
   createSnake();
   drawGrids();
   drawSnake(snake);
-  // addKeyListener();
-  // setInterval(animateSnake,140);
+  addKeyListener();
+  setInterval(animateSnake,200);
 }
 
 window.onload=startGame;
