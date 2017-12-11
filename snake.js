@@ -1,5 +1,10 @@
 const _directions=["north","east","south","west","north"];
 
+const randomDirection=function() {
+  let index=generateRandomNumberBetween(0,_directions.length);
+  return _directions[index];
+}
+
 const Position=function(x,y,direction) {
   this.x=x;
   this.y=y;
@@ -140,7 +145,8 @@ const animateSnake=function() {
   paintHead(head);
   if(head.isSameCoordAs(food)) {
     snake.grow();
-    //regenerate food
+    createFood();
+    drawFood();
   }
 }
 
@@ -179,8 +185,19 @@ const drawFood=function() {
   paintCell(food,"food");
 }
 
+const generateRandomNumberBetween=function(x,y) {
+  return Math.floor(Math.random()*(y-x))+x;
+}
+
+const generateRandomPosition=function(maxX,maxY) {
+  let x=generateRandomNumberBetween(0,maxX);
+  let y=generateRandomNumberBetween(0,maxY);
+  let direction=randomDirection();
+  return new Position(x,y,direction);
+}
+
 const createFood=function() {
-  food=new Position(20,20,"east");
+  food=generateRandomPosition(numberOfCols,numberOfRows);
 }
 
 const startGame=function() {
