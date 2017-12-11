@@ -30,6 +30,10 @@ Position.prototype.turnRight=function() {
   return new Position(this.x,this.y,newDirection);
 }
 
+Position.prototype.isSameCoordAs=function(other) {
+  return this.x==other.x && this.y==other.y;
+}
+
 Position.prototype.getCoord=function() {
   return [this.x,this.y];
 }
@@ -53,7 +57,7 @@ Snake.prototype={
     return this.body.shift();
   },
   grow:function() {
-    this.positions.unshift(["hidden","tail"]);
+    this.body.unshift(new Position(Infinity,Infinity,this.direction));
   },
   turnLeft:function() {
     this.head=this.head.turnLeft();
@@ -72,6 +76,7 @@ Snake.prototype={
 //
 
 let snake=undefined;
+let food=undefined;
 let numberOfRows=60;
 let numberOfCols=120;
 
@@ -128,11 +133,15 @@ const detectCollisions=function(snake) {
 
 const animateSnake=function() {
   let oldHead=snake.getHead();
+  paintBody(oldHead);
   let oldTail=snake.move();
   unpaintSnake(oldTail);
   let head=snake.getHead();
   paintHead(head);
-  paintBody(oldHead);
+  if(head.isSameCoordAs(food)) {
+    snake.grow();
+    //regenerate food
+  }
 }
 
 const changeSnakeDirection=function(event) {
@@ -166,10 +175,20 @@ const createSnake=function() {
   snake=new Snake(head,body);
 }
 
+const drawFood=function() {
+  paintCell(food,"food");
+}
+
+const createFood=function() {
+  food=new Position(20,20,"east");
+}
+
 const startGame=function() {
   createSnake();
+  createFood();
   drawGrids();
   drawSnake(snake);
+  drawFood();
   addKeyListener();
   setInterval(animateSnake,200);
 }

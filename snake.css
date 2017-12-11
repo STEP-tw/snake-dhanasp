@@ -19,3 +19,7 @@
 .snake_head {
   background-color: red;
 }
+
+.food {
+  background-color: blue;
+}
