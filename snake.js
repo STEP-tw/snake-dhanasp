@@ -70,9 +70,10 @@ Snake.prototype={
   turnRight:function() {
     this.head=this.head.turnRight();
   },
-  containsPosition:function(head) {
-    return this.positions.slice(0,-1).some(function(position){
-      return head[0]==position[0] && (head[1]==position[1]);
+  isEatingItself:function() {
+    let head=this.head;
+    return this.body.some(function(pos){
+      return pos.isSameCoordAs(head);
     });
   }
 }
@@ -136,13 +137,19 @@ const detectCollisions=function(snake) {
   }
 }
 
+let animator=undefined;
+
 const animateSnake=function() {
   let oldHead=snake.getHead();
-  paintBody(oldHead);
   let oldTail=snake.move();
-  unpaintSnake(oldTail);
   let head=snake.getHead();
+  paintBody(oldHead);
+  unpaintSnake(oldTail);
   paintHead(head);
+  if (snake.isEatingItself()) {
+    clearInterval(animator);
+    return;
+  }
   if(head.isSameCoordAs(food)) {
     snake.grow();
     createFood();
@@ -202,12 +209,12 @@ const createFood=function() {
 
 const startGame=function() {
   createSnake();
-  createFood();
   drawGrids();
   drawSnake(snake);
+  createFood();
   drawFood();
   addKeyListener();
-  setInterval(animateSnake,200);
+  animator=setInterval(animateSnake,140);
 }
 
 window.onload=startGame;
