@@ -25,6 +25,3 @@ Snake.prototype={
     this.head=this.head.turnRight();
   }
 }
-// Controller and View below
-// Model above
-//

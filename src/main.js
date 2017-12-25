@@ -1,46 +1,7 @@
-
 let snake=undefined;
 let food=undefined;
 let numberOfRows=60;
 let numberOfCols=120;
-
-const drawGrids=function() {
-  let grid=document.getElementById("grid");
-  for (var i = 0; i < numberOfRows; i++) {
-    let row=document.createElement("tr");
-    for (var j = 0; j < numberOfCols; j++) {
-      let col=document.createElement("td");
-      col.id=`${j}_${i}`;
-      row.appendChild(col);
-    }
-    grid.appendChild(row);
-  }
-}
-
-const paintCell=function(pos,color) {
-  let cell=document.getElementById(pos.getCoord().join("_"));
-  if(cell)
-    cell.className=color;
-}
-
-const paintBody=function(pos) {
-  paintCell(pos,"snake");
-}
-
-const paintHead=function(pos) {
-  paintCell(pos,"snake_head");
-}
-
-const unpaintSnake=function(pos) {
-  paintCell(pos,"");
-}
-
-const drawSnake=function(snake) {
-  snake.getBody().forEach(function(pos){
-    paintBody(pos);
-  });
-  paintHead(snake.getHead());
-}
 
 let animator=undefined;
 
@@ -53,8 +14,8 @@ const animateSnake=function() {
   paintHead(head);
   if(head.isSameCoordAs(food)) {
     snake.grow();
-    createFood();
-    drawFood();
+    createFood(numberOfRows,numberOfCols);
+    drawFood(food);
   }
 }
 
@@ -89,20 +50,16 @@ const createSnake=function() {
   snake=new Snake(head,body);
 }
 
-const drawFood=function() {
-  paintCell(food,"food");
-}
-
-const createFood=function() {
+const createFood=function(numberOfRows,numberOfCols) {
   food=generateRandomPosition(numberOfCols,numberOfRows);
 }
 
 const startGame=function() {
   createSnake();
-  drawGrids();
+  drawGrids(numberOfRows,numberOfCols);
   drawSnake(snake);
-  createFood();
-  drawFood();
+  createFood(numberOfRows,numberOfCols);
+  drawFood(food);
   addKeyListener();
   animator=setInterval(animateSnake,140);
 }
