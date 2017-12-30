@@ -24,3 +24,11 @@ Game.prototype.turnRight=function() {
 Game.prototype.grow=function() {
   return this.snake.grow();
 }
+
+Game.prototype.move=function() {
+  let details={};
+  details.oldHead=this.snake.getHead();
+  details.oldTail=this.snake.move();
+  details.head=this.snake.getHead();
+  return details;
+}
