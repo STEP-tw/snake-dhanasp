@@ -4,34 +4,13 @@ This is a simple snake game.
 
 ## Scenario
 
-The game is almost ready. However, this game doesn't end. There are no terminal conditions that have been written for this game yet.
+The snake game is still incomplete. However, here, we are concerned with updating the score as a snake eats each piece of food.
 
-The game is considered over when:
-
-1. The Snake hits any of the edges of the viewport.
-
-![](https://raw.githubusercontent.com/craftybones/licensefoo/master/Snake.png)
-
-![](https://raw.githubusercontent.com/craftybones/licensefoo/master/Snake_up.png)
-
-![](https://raw.githubusercontent.com/craftybones/licensefoo/master/Snake_right.png)
-
-![](https://raw.githubusercontent.com/craftybones/licensefoo/master/Snake_down.png)
-
-
-2. The Snake eats itself
-
-![](https://raw.githubusercontent.com/craftybones/licensefoo/master/Snake_eating_itself.png)
-
-
-The red color represents the head of the snake. The blue border represents the edges of the viewport. The rounded blue object represents food.
-
+Eating each piece of food gives the player 10 points. If the player eats 10 pieces of food, the user gets 100 points and so on.
 
 ## Objective
 
-Detect the end of the game based on the conditions above. Once the game is over, offer the user a chance to play the game again.
-
-There is no need to implement a server.
+Update the score as the snake eats a piece of food. Update this information at the bottom of the snake viewport.
 
 ## Suggestions
 
