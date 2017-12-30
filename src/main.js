@@ -10,10 +10,10 @@ const animateSnake=function() {
   paintBody(details.oldHead);
   unpaintSnake(details.oldTail);
   paintHead(details.head);
-  if(details.head.isSameCoordAs(food)) {
+  if(game.hasSnakeEatenFood()) {
     game.grow();
-    createFood(numberOfRows,numberOfCols);
-    drawFood(food);
+    game.createFood();
+    drawFood(game.getFood());
   }
 }
 
@@ -64,8 +64,8 @@ const startGame=function() {
   createSnake();
   drawGrids(numberOfRows,numberOfCols);
   drawSnake(game.getSnake());
-  createFood(numberOfRows,numberOfCols);
-  drawFood(food);
+  game.createFood();
+  drawFood(game.getFood());
   addKeyListener();
   animator=setInterval(animateSnake,140);
 }

@@ -25,10 +25,24 @@ Game.prototype.grow=function() {
   return this.snake.grow();
 }
 
+Game.prototype.getFood=function() {
+  return this.food.getPosition();
+}
+
 Game.prototype.move=function() {
   let details={};
   details.oldHead=this.snake.getHead();
   details.oldTail=this.snake.move();
   details.head=this.snake.getHead();
   return details;
+}
+
+Game.prototype.hasSnakeEatenFood=function() {
+  return this.snake.head.isSameCoordAs(this.food.getPosition());
+}
+
+Game.prototype.createFood=function() {
+  console.log(this.bottomRight);
+  let position=generateRandomPosition(this.bottomRight.x,this.bottomRight.y);
+  this.food=new Food(position);
 }
