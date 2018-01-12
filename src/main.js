@@ -1,5 +1,3 @@
-let snake=undefined;
-let food=undefined;
 let numberOfRows=60;
 let numberOfCols=120;
 
@@ -8,14 +6,27 @@ let animator=undefined;
 const animateSnake=function() {
   game.moveSnake();
   game.consumeFood();
-  // if(game.snake.head.isSameCoordAs(food)) {
-  //   snake.grow();
-  //   createFood(numberOfRows,numberOfCols);
-  //   drawFood(food);
-  // }
-  processGameEnd(game.snake,numberOfCols,numberOfRows,animator);
-
+  processGameEnd(animator);
 }
+
+let processGameEnd=function(id){
+  if (game.isSnakeEatsItself()|| game.isSnakeEncountersAtBorder()) {
+    return stop(id);
+  }
+}
+
+let stop=function (id) {
+  clearInterval(id);
+  let button=document.createElement("button");
+  button.innerText="New Game";
+  button.onclick=startNewgame;
+  document.body.appendChild(button);
+}
+
+let startNewgame=function(){
+  window.location.reload();
+}
+
 
 const changeSnakeDirection=function(event) {
   switch (event.code) {
