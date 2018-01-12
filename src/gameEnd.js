@@ -1,34 +1,33 @@
-let processGameEnd=function(snake,rows,cols){
+let processGameEnd=function(snake,rows,cols,id){
   let snakeXPos=snake.head.x;
   let snakeYPos=snake.head.y;
   if (isSnakeEatsItself(snake)) {
+    return stop(id)
   }
   if (isSnakeEncountersToTopAndBottomBorder(snakeYPos)) {
-    stop();
+    return stop(id);
   }
   if (isSnakeEncountersToLeftAndRightBorder(snakeXPos)) {
-    stop()
+    return stop(id);
   }
 
 }
 let isSnakeEatsItself=function(snake){
   let head=snake.getHead();
   let body=snake.getBody();
-  body.forEach(function(partOfBody){
-    if(head.isSameCoordAs(partOfBody)){
-      console.log("m eating myself");
-    }
+  return body.some(function(partOfBody){
+    return head.isSameCoordAs(partOfBody);
   });
 }
 
 let isSnakeEncountersToTopAndBottomBorder=function(snakeYPos) {
-  return snakeYPos==0|| snakeYPos==60;
+  return snakeYPos==0|| snakeYPos==59;
 }
 
 let isSnakeEncountersToLeftAndRightBorder=function(snakeXPos){
-  return snakeXPos==0|| snakeXPos==120;
+  return snakeXPos==0|| snakeXPos==119;
 }
 
-let stop=function () {
-
+let stop=function (id) {
+  clearInterval(id);
 }
