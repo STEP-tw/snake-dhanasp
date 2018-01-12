@@ -30,4 +30,12 @@ let isSnakeEncountersToLeftAndRightBorder=function(snakeXPos){
 
 let stop=function (id) {
   clearInterval(id);
+  let button=document.createElement("button");
+  button.innerText="New Game";
+  button.onclick=startNewgame;
+  document.body.appendChild(button);
+}
+
+let startNewgame=function(){
+  window.location.reload();
 }

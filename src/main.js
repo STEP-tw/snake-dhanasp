@@ -18,7 +18,7 @@ const animateSnake=function() {
     drawFood(food);
   }
   processGameEnd(snake,numberOfCols,numberOfRows,animator);
-  
+
 }
 
 
