@@ -23,10 +23,6 @@ Snake.prototype={
   },
   turnRight:function() {
     this.head=this.head.turnRight();
-  },
-  stop:function(head,body){
-    this.head=head;
-    this.body=body;
   }
 
 }
