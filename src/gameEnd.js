@@ -1,0 +1,3 @@
+processGameEnd=function(snake){
+  
+}

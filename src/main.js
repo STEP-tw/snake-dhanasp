@@ -17,6 +17,7 @@ const animateSnake=function() {
     createFood(numberOfRows,numberOfCols);
     drawFood(food);
   }
+  processGameEnd(snake);
 }
 
 const changeSnakeDirection=function(event) {
