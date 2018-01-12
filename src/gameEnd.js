@@ -2,7 +2,7 @@ let processGameEnd=function(snake,rows,cols,id){
   let snakeXPos=snake.head.x;
   let snakeYPos=snake.head.y;
   if (isSnakeEatsItself(snake)) {
-    return stop(id)
+    return stop(id);
   }
   if (isSnakeEncountersToTopAndBottomBorder(snakeYPos)) {
     return stop(id);
@@ -13,19 +13,15 @@ let processGameEnd=function(snake,rows,cols,id){
 
 }
 let isSnakeEatsItself=function(snake){
-  let head=snake.getHead();
-  let body=snake.getBody();
-  return body.some(function(partOfBody){
-    return head.isSameCoordAs(partOfBody);
-  });
+  return snake.isSnakeEatsItself();
 }
 
 let isSnakeEncountersToTopAndBottomBorder=function(snakeYPos) {
-  return snakeYPos==0|| snakeYPos==59;
+  return snakeYPos==0 || snakeYPos==59;
 }
 
 let isSnakeEncountersToLeftAndRightBorder=function(snakeXPos){
-  return snakeXPos==0|| snakeXPos==119;
+  return snakeXPos==0 || snakeXPos==119;
 }
 
 let stop=function (id) {
