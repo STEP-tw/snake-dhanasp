@@ -1,14 +1,24 @@
 let processGameEnd=function(snake,rows,cols){
   let snakeXPos=snake.head.x;
   let snakeYPos=snake.head.y;
+  if (isSnakeEatsItself(snake)) {
+  }
   if (isSnakeEncountersToTopAndBottomBorder(snakeYPos)) {
-    console.log("i m at border");
+    stop();
   }
   if (isSnakeEncountersToLeftAndRightBorder(snakeXPos)) {
-    console.log("i m at border");
-
+    stop()
   }
 
+}
+let isSnakeEatsItself=function(snake){
+  let head=snake.getHead();
+  let body=snake.getBody();
+  body.forEach(function(partOfBody){
+    if(head.isSameCoordAs(partOfBody)){
+      console.log("m eating myself");
+    }
+  });
 }
 
 let isSnakeEncountersToTopAndBottomBorder=function(snakeYPos) {
